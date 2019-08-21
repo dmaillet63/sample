@@ -34,7 +34,7 @@ node {
     }
     if (currentBuild.currentResult == 'SUCCESS') {
         stage('Deploy') {
-            sh 'cp x.war prod-folder'
+            sh 'pwd'
         }
     }
 }
