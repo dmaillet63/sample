@@ -36,9 +36,9 @@ node {
       // Create "artifacts" directory only if it does not already exist
       sh 'mkdir -p artifacts'
 
-      artifactName = "artifacts/${env.BUILD_ID}-${env.Branch_Name}.zip"
+      artifactName = "artifacts/${env.BUILD_ID}-${env.Branch_Name}.tar.gz"
       echo "Creating artifact named: ${artifactName}"
-      sh "zip ${artifactName} build.txt"
+      sh "tar -cvzf ${artifactName} build.txt"
     }
     stage('OK to Proceed to QA') {
       input message: 'Proceed with QA deployment?', ok: 'Yes'
