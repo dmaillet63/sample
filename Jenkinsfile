@@ -16,7 +16,7 @@
 // *** Initialization ***
 
 ARTIFACT_PATH = "artifacts"
-ARTIFACT_NAME = "${ARTIFACT_PATH}/${env.BUILD_ID}-${env.Branch_Name}.tar.gz"
+ARTIFACT_NAME = "${env.BUILD_ID}-${env.Branch_Name}.tar.gz"
 
 // *** Pipeline steps ***
 
@@ -40,7 +40,7 @@ node {
     stage('Create Artifact') {
       echo "Creating artifact named: ${ARTIFACT_NAME}"
       sh "tar -cvzf ${ARTIFACT_NAME} build.txt"
-      
+
       dir("${ARTIFACT_PATH}") {
         sh "mv ../${ARTIFACT_NAME} ."
       }
