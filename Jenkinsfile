@@ -38,9 +38,11 @@ node {
       )
     }
     stage('Create Artifact') {
+      echo "Creating artifact named: ${ARTIFACT_NAME}"
+      sh "tar -cvzf ${ARTIFACT_NAME} build.txt"
+      
       dir("${ARTIFACT_PATH}") {
-        echo "Creating artifact named: ${ARTIFACT_NAME}"
-        sh "tar -cvzf ${ARTIFACT_NAME} ../build.txt"
+        sh "mv ../${ARTIFACT_NAME} ."
       }
     }
     stage('OK to Proceed to QA') {
