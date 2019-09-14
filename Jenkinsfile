@@ -15,7 +15,8 @@
 
 // *** Initialization ***
 
-gitHash = ""
+ARTIFACT_PATH = "artifacts"
+ARTIFACT_NAME = "${ARTIFACT_PATH}/${env.BUILD_ID}-${env.Branch_Name}.tar.gz"
 
 // *** Pipeline steps ***
 
@@ -26,19 +27,21 @@ node {
             echo "Build step"
             sh 'echo "The build file" > build.txt'
          },
-         'Scan source code': {
+         'Quality - Scan source code': {
             echo "Scan step"
             sh 'echo "The scan report shows success" > scan.txt'
+         },
+         'Security - Static Code Analysis': {
+            echo "Static Code Analysis step"
+            sh 'echo "The security scan report shows success" > security-scan.txt'
          }
       )
     }
     stage('Create Artifact') {
-      // Create "artifacts" directory only if it does not already exist
-      sh 'mkdir -p artifacts'
-
-      artifactName = "artifacts/${env.BUILD_ID}-${env.Branch_Name}.tar.gz"
-      echo "Creating artifact named: ${artifactName}"
-      sh "tar -cvzf ${artifactName} build.txt"
+      dir("${ARTIFACT_PATH}") {
+        echo "Creating artifact named: ${ARTIFACT_NAME}"
+        sh "tar -cvzf ${ARTIFACT_NAME} ../build.txt"
+      }
     }
     stage('OK to Proceed to QA') {
       input message: 'Proceed with QA deployment?', ok: 'Yes'
@@ -55,13 +58,8 @@ node {
     }
     stage('Initiate Prod Deployment') {
        build job: "Operations/Prod-Deploy", propagate: true, wait: true, parameters:
-          [string(name: 'artifact', value: "${artifactName}"),
+          [string(name: 'artifact', value: "${ARTIFACT_NAME}"),
           string(name: 'branch', value: "${env.Branch_Name}"),
           string(name: 'pipelineBuildNumber', value: "${env.BUILD_ID}")]
     }
-//    if (currentBuild.currentResult == 'SUCCESS') {
-//        stage('Deploy') {
-//            sh 'pwd'
-//        }
-//    }
 }
