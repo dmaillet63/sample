@@ -38,7 +38,7 @@ node {
 
       artifactName = "artifacts/${env.BUILD_ID}-${env.Branch_Name}.zip"
       echo "Creating artifact named: ${artifactName}"
-      sh 'zip ${artifactName} build.txt'
+      sh "zip ${artifactName} build.txt"
     }
     stage('OK to Proceed to QA') {
       input message: 'Proceed with QA deployment?', ok: 'Yes'
