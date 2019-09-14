@@ -13,6 +13,12 @@
 //
 //**************************************************************************
 
+// *** Initialization ***
+
+gitHash = ""
+
+// *** Pipeline steps ***
+
 node {
     stage('Build-Scan') {
       parallel(
@@ -27,7 +33,7 @@ node {
       )
     }
     stage('Create Artifact') {
-      artifactName = "artifacts/${env.BUILD_ID}-${gitHash.substring(0,7)}-${env.Branch_Name}.zip"
+      artifactName = "artifacts/${env.BUILD_ID}-${env.Branch_Name}.zip"
       sh 'zip ${artifactName} build.txt'
     }
     stage('OK to Proceed to QA') {
