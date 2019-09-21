@@ -39,7 +39,10 @@ node {
          },
          'Security - Static Code Analysis': {
             echo "Static Code Analysis step"
-            sh 'echo "The security scan report shows success" > security-scan.txt'
+//            sh 'echo "The security scan report shows success" > security-scan.txt'
+            build job: "Security/Code-Scan", propagate: true, wait: true, parameters:
+              [string(name: 'branch', value: "${env.Branch_Name}"),
+               string(name: 'pipelineBuildNumber', value: "${env.BUILD_ID}")]
          }
       )
     }
