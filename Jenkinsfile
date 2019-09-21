@@ -21,7 +21,7 @@ ARTIFACT_NAME = "${env.BUILD_ID}-${env.Branch_Name}.tar.gz"
 // *** Define functions ***
 
 def notifyTeam(message) {
-   echo "TEAM MESSAGE: " message
+   echo "TEAM MESSAGE: ${message}"
 }
 
 // *** Pipeline steps ***
