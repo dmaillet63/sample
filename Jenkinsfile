@@ -52,6 +52,7 @@ node {
       }
     }
     stage('OK to Proceed to QA') {
+      notifyTeam("${ARTIFACT_NAME} is ready for QA")
       input message: 'Proceed with QA deployment?', ok: 'Yes'
     }
     stage('QA') {
